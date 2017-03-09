@@ -1,0 +1,23 @@
+{
+  "name": "build-docs",
+  "version": "1.0.0",
+  "description": "Library to extract inline comments out of your services",
+  "main": "index.js",
+  "author": "dom@readme.io",
+  "license": "MIT",
+  "repository": "readmeio/build-docs",
+  "scripts": {
+    "pretest": "eslint . -f unix",
+    "test": "nyc mocha",
+    "posttest": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100"
+  },
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb-base": "^11.1.1",
+    "eslint-plugin-import": "^2.2.0"
+  },
+  "dependencies": {
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2"
+  }
+}

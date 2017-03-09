@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "arrow-body-style": 0,
+    // Allow stuff like for of
+    "no-restricted-syntax": 0,
+
+    // Allow overwriting of stuff like:
+    // res.body.a = 'asdsasad';
+    "no-param-reassign": ["error", { "props": false }],
+
+    // Allow _id
+    "no-underscore-dangle": ["error", { "allow": ["_id", "__v"] }],
+  }
+}
