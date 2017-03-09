@@ -4,7 +4,16 @@ const docs = require('../');
 
 describe('build-docs', () => {
   describe('#extract()', () => {
-    describe('description', () => {});
+    describe('description', () => {
+      it('should extract the description', () => {
+        const description = 'Creates a user in the database';
+        assert.deepEqual(docs.extract(`
+          /*
+           * ${description}
+           */
+        `).description, description);
+      });
+    });
 
     describe('@param', () => {
       function testParam(comments, expected) {
@@ -21,7 +30,7 @@ describe('build-docs', () => {
           /*
 ${comments.map(comment => `           * @param ${comment}`).join('\n')}
            */
-        `), { params: expected });
+        `).params, expected);
       }
 
       it('should extract primitives from comments', () => {

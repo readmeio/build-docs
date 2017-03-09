@@ -28,6 +28,7 @@ function extract(comment) {
   const params = parsed.map(c => c.tags).reduce((a, b) => a.concat(b), []).filter(tag => tag.name === 'param').map(p => p.value);
 
   return {
+    description: parsed.map(c => c.lines).reduce((a, b) => a.concat(b), []).join(),
     params: params.map((param) => {
       const matches = param.match(PARAM);
       const type = getType(matches[1]);
