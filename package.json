@@ -17,6 +17,7 @@
     "eslint-plugin-import": "^2.2.0"
   },
   "dependencies": {
+    "comments-parser": "^1.0.0",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2"
   }

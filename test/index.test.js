@@ -43,6 +43,17 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         });
       });
 
+      it('should correctly work with object arrays', () => {
+        testParam('{Object[]} interests Interests of the user', {
+          type: 'array',
+          items: {
+            type: 'object',
+          },
+          title: 'interests',
+          description: 'Interests of the user',
+        });
+      });
+
       it('should extract objects ', () => {
         testParam('{Object} address Address of the user', {
           type: 'object',
@@ -70,6 +81,8 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
           },
         });
       });
+
+      it('should work for recursively nested objects');
 
       it('should extract arrays of nested objects', () => {
         testParam([
