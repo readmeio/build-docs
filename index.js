@@ -14,6 +14,10 @@ const PARAM = /^{(.*)}\s+(\w+(?:(?:\[\])*\.\w+)*)\s+([\s\S]+)$/;
 // favouriteFoods[].cuisine
 const IS_NESTED_OBJECT_OR_ARRAY = /(\w+)(\[\])*\.(\w+)+/;
 
+// Matches:
+// Error description
+// {Error}
+// {Error} Error description
 const THROWS = /^(?:{(.*)}){0,1}\s*([\s\S]+)?$/;
 
 function getType(type) {
