@@ -91,8 +91,6 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         });
       });
 
-      it('should work for recursively nested objects');
-
       it('should extract arrays of nested objects', () => {
         testParam([
           '{Object[]} favouriteFoods Favourite foods of the user',
@@ -116,6 +114,46 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
             },
           },
         });
+      });
+
+      it('should work for recursively nested objects');
+    });
+
+    describe('@throws', () => {
+      function testThrows(comments, expected) {
+        if (!Array.isArray(comments)) {
+          comments = [comments]; // eslint-disable-line no-param-reassign
+        }
+
+        if (!Array.isArray(expected)) {
+          expected = [expected]; // eslint-disable-line no-param-reassign
+        }
+
+        // This is sketchy... but it works
+        assert.deepEqual(docs.extract(`
+          /*
+${comments.map(comment => `           * @throws ${comment}`).join('\n')}
+           */
+        `).throws, expected);
+      }
+
+      it('should work with just a description', () => {
+        const description = 'Will throw an error if the argument is null';
+
+        testThrows(description, { description });
+      });
+
+      it('should work with just a type', () => {
+        const type = '{ValidationError}';
+
+        testThrows(type, { type: type.replace(/{|}/g, '') });
+      });
+
+      it('should work with type and description', () => {
+        const type = '{ValidationError}';
+        const description = 'Will throw an error if the argument is null';
+
+        testThrows(`${type} ${description}`, { type: type.replace(/{|}/g, ''), description });
       });
     });
   });
