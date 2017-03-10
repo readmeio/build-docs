@@ -3,6 +3,19 @@ const assert = require('assert');
 const docs = require('../');
 
 describe('build-docs', () => {
+  it('should work for multiple blocks', () => {
+    const description = 'Creates a user in the database';
+    assert.deepEqual(docs(`
+      /*
+       * ${description}
+       */
+
+      /*
+       * ${description}
+       */
+    `).map(a => a.description), [description, description]);
+  });
+
   describe('description', () => {
     it('should extract the description', () => {
       const description = 'Creates a user in the database';
@@ -10,7 +23,16 @@ describe('build-docs', () => {
         /*
          * ${description}
          */
-      `).description, description);
+      `)[0].description, description);
+    });
+
+    it('should remove the action if set', () => {
+      const description = 'Creates a user in the database';
+      assert.deepEqual(docs(`
+        /*
+         * action: ${description}
+         */
+      `)[0].description, description);
     });
   });
 
@@ -29,7 +51,7 @@ describe('build-docs', () => {
         /*
 ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          */
-      `).params, expected);
+      `)[0].params, expected);
     }
 
     it('should extract primitives from comments', () => {
@@ -133,7 +155,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         /*
 ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
-      `).throws, expected);
+      `)[0].throws, expected);
     }
 
     it('should work with just a description', () => {
@@ -157,13 +179,16 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
   });
 
   describe('alternative comment styles', () => {
-    it('single line comments', () => {
+    // This style can't be supported because esprima picks each
+    // line up as a new comment because technically it starts/ends
+    // on the same line
+    it.skip('single line comments', () => {
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         //
         // ${description}
         //
-      `).description, description);
+      `)[0].description, description);
     });
 
     it('marc-style comments', () => {
@@ -172,7 +197,56 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         /*
           ${description}
          */
-      `).description, description);
+      `)[0].description, description);
+    });
+  });
+
+  describe('@name', () => {
+    it('should add a name based on the string before the description', () => {
+      assert.equal(docs(`
+        /*
+         * action: Description
+         */
+      `)[0].name, 'action');
+    });
+
+    it('should add it with @name', () => {
+      assert.equal(docs(`
+        /*
+         * Description
+         *
+         * @name action
+         */
+      `)[0].name, 'action');
+    });
+
+    it('should take the first @name', () => {
+      assert.equal(docs(`
+        /*
+         * Description
+         *
+         * @name action
+         * @name action1
+         */
+      `)[0].name, 'action');
+    });
+
+    it('should favour the former over the latter', () => {
+      assert.equal(docs(`
+        /*
+         * action: Description
+         *
+         * @name action1
+         */
+      `)[0].name, 'action');
+    });
+
+    it('should default to empty string', () => {
+      assert.equal(docs(`
+        /*
+         * Description
+         */
+      `)[0].name, '');
     });
   });
 });

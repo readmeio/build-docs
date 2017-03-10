@@ -1,22 +1,27 @@
 const commentsParser = require('comments-parser');
+const parseDescription = require('./lib/description');
 const parseParams = require('./lib/params');
 const parseThrows = require('./lib/throws');
+const parseName = require('./lib/name');
 
 function getTags(parsed, t) {
-  return parsed
-    .map(c => c.tags)
-    .reduce((a, b) => a.concat(b), [])
+  return parsed.tags
     .filter(tag => tag.name === t)
     .map(p => p.value);
 }
 
-module.exports = function extract(comment) {
-  const parsed = commentsParser(comment);
-
+function parseComment(comment) {
+  const nameDescription = parseDescription(comment.lines);
   return {
-    description: parsed.map(c => c.lines).reduce((a, b) => a.concat(b), []).join(),
-    params: parseParams(getTags(parsed, 'param')),
-    throws: parseThrows(getTags(parsed, 'throws')),
+    description: nameDescription.description,
+    params: parseParams(getTags(comment, 'param')),
+    throws: parseThrows(getTags(comment, 'throws')),
+    name: parseName(nameDescription.name, getTags(comment, 'name')),
   };
-};
+}
 
+module.exports = function extract(source) {
+  const parsed = commentsParser(source);
+
+  return parsed.map(parseComment);
+};
