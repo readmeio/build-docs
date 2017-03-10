@@ -155,4 +155,24 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
       testThrows(`${type} ${description}`, { type: type.replace(/{|}/g, ''), description });
     });
   });
+
+  describe('alternative comment styles', () => {
+    it('single line comments', () => {
+      const description = 'Creates a user in the database';
+      assert.deepEqual(docs(`
+        //
+        // ${description}
+        //
+      `).description, description);
+    });
+
+    it('marc-style comments', () => {
+      const description = 'Creates a user in the database';
+      assert.deepEqual(docs(`
+        /*
+          ${description}
+         */
+      `).description, description);
+    });
+  });
 });
