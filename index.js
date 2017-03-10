@@ -25,10 +25,18 @@ function getType(type) {
   return type;
 }
 
-function extract(comment) {
+function getTags(parsed, t) {
+  return parsed
+    .map(c => c.tags)
+    .reduce((a, b) => a.concat(b), [])
+    .filter(tag => tag.name === t)
+    .map(p => p.value);
+}
+
+module.exports = function extract(comment) {
   const parsed = commentsParser(comment);
-  const params = parsed.map(c => c.tags).reduce((a, b) => a.concat(b), []).filter(tag => tag.name === 'param').map(p => p.value);
-  const throws = parsed.map(c => c.tags).reduce((a, b) => a.concat(b), []).filter(tag => tag.name === 'throws').map(p => p.value);
+  const params = getTags(parsed, 'param');
+  const throws = getTags(parsed, 'throws');
 
   return {
     description: parsed.map(c => c.lines).reduce((a, b) => a.concat(b), []).join(),
@@ -100,6 +108,4 @@ function extract(comment) {
       return output;
     }),
   };
-}
-
-module.exports = { extract };
+};
