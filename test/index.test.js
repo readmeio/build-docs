@@ -1,4 +1,5 @@
 const assert = require('assert');
+const fs = require('fs');
 
 const docs = require('../');
 
@@ -247,6 +248,15 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          * Description
          */
       `)[0].name, '');
+    });
+  });
+
+  describe('complete example', () => {
+    it('should work for a full example', () => {
+      const actual = fs.readFileSync(`${__dirname}/fixtures/actual.js`);
+      const expected = fs.readFileSync(`${__dirname}/fixtures/expected.json`);
+
+      assert.deepEqual(`${JSON.stringify(docs(actual), null, 2)}\n`, expected.toString());
     });
   });
 });

@@ -1,0 +1,85 @@
+[
+  {
+    "name": "createUser",
+    "description": "Creates a user in the database",
+    "params": [
+      {
+        "title": "name",
+        "description": "Name of the user",
+        "type": "string"
+      },
+      {
+        "title": "age",
+        "description": "Age of the user",
+        "type": "number"
+      },
+      {
+        "title": "interests",
+        "description": "Interests of the user",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      {
+        "title": "address",
+        "description": "Address of the user",
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street of the user"
+          },
+          "city": {
+            "type": "string",
+            "description": "City of the user"
+          },
+          "state": {
+            "type": "string",
+            "description": "State of the user"
+          },
+          "zip": {
+            "type": "string",
+            "description": "Zip code of the user"
+          }
+        }
+      },
+      {
+        "title": "favouriteFoods",
+        "description": "Favourite foods of the user",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "cuisine": {
+              "type": "string",
+              "description": "Name of the cuisine"
+            },
+            "dish": {
+              "type": "string",
+              "description": "Favourite dish"
+            }
+          }
+        }
+      }
+    ],
+    "throws": [
+      {
+        "type": "ValidationError",
+        "description": "Must provide all required fields"
+      }
+    ]
+  },
+  {
+    "name": "deleteUser",
+    "description": "Deletes a user in the database",
+    "params": [
+      {
+        "title": "id",
+        "description": "Id of the user",
+        "type": "number"
+      }
+    ],
+    "throws": []
+  }
+]

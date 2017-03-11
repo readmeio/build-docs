@@ -13,10 +13,10 @@ function getTags(parsed, t) {
 function parseComment(comment) {
   const nameDescription = parseDescription(comment.lines);
   return {
+    name: parseName(nameDescription.name, getTags(comment, 'name')),
     description: nameDescription.description,
     params: parseParams(getTags(comment, 'param')),
     throws: parseThrows(getTags(comment, 'throws')),
-    name: parseName(nameDescription.name, getTags(comment, 'name')),
   };
 }
 
