@@ -30,7 +30,7 @@ const source = `
  * @throws {ValidationError} Must provide all required fields
  */`;
 
-console.log(require('util').inspect(buildDocs(source), { depth: null })); // eslint-disable-line no-console
+console.log(require('util').inspect(buildDocs(source), { depth: null }));
 // [ { name: 'createUser',
 //     description: 'Creates a user in the database',
 //     params:
@@ -88,41 +88,51 @@ We parse your format and output a valid [JSON Schema](http://json-schema.org/) f
 Primitive types:
 
 ```js
-@param {string} name Name of the user
-@param {number} age Age of the user
+/*
+ * @param {string} name Name of the user
+ * @param {number} age Age of the user
+ */
 ```
 
 Arrays:
 
 ```js
-@param {string[]} interests Interests of the user
+/*
+ * @param {string[]} interests Interests of the user
+ */
 ```
 
 Objects with nested properties:
 
 ```js
-@param {Object} address Address of the user
-@param {string} address.street Street of the user
-@param {string} address.city City of the user
-@param {string} address.state State of the user
-@param {string} address.zip Zip code of the user
+/*
+ * @param {Object} address Address of the user
+ * @param {string} address.street Street of the user
+ * @param {string} address.city City of the user
+ * @param {string} address.state State of the user
+ * @param {string} address.zip Zip code of the user
+ */
 ```
 
 Arrays of objects with nested properties
 
 ```js
-@param {Object[]} favouriteFoods Favourite foods of the user
-@param {string} favouriteFoods[].cuisine Name of the cuisine
-@param {string} favouriteFoods[].dish Favourite dish
+/*
+ * @param {Object[]} favouriteFoods Favourite foods of the user
+ * @param {string} favouriteFoods[].cuisine Name of the cuisine
+ * @param {string} favouriteFoods[].dish Favourite dish
+ */
 ```
 
 #### `@throws`
 We support the same syntax as [jsdoc](http://usejsdoc.org/tags-throws.html).
 
 ```js
-@throws free form error description
-@throws {ErrorType} free form error description
-@throws {JustAnErrorType}
+/*
+ * @throws free form error description
+ * @throws {ErrorType} free form error description
+ * @throws {JustAnErrorType}
+ */
 ```
 
 ## Credits
