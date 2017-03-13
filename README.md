@@ -20,7 +20,7 @@ yarn add build-docs
 ## Usage
 
 ```js
-const buildDocs = require('./');
+const buildDocs = require('build-docs');
 
 const source = `
 /*
@@ -28,6 +28,7 @@ const source = `
  *
  * @param {string} name Name of the user
  * @throws {ValidationError} Must provide all required fields
+ * @returns {Object} user The created user object
  */`;
 
 console.log(require('util').inspect(buildDocs(source), { depth: null }));
@@ -39,7 +40,11 @@ console.log(require('util').inspect(buildDocs(source), { depth: null }));
 //          type: 'string' } ],
 //     throws:
 //      [ { type: 'ValidationError',
-//          description: 'Must provide all required fields' } ] } ]
+//          description: 'Must provide all required fields' } ],
+//     returns:
+//      { title: 'user',
+//        description: 'The created user object',
+//        type: 'object' } } ]
 ```
 
 ### `const docs = buildDocs(source)`
@@ -132,6 +137,15 @@ We support the same syntax as [jsdoc](http://usejsdoc.org/tags-throws.html).
  * @throws free form error description
  * @throws {ErrorType} free form error description
  * @throws {JustAnErrorType}
+ */
+```
+
+#### `@returns`
+Exactly the same as [@param](#param), but only returning the first instance.
+
+```js
+/*
+ * @returns {string} name Name of the user
  */
 ```
 
