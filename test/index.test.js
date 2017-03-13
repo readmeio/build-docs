@@ -251,6 +251,117 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
     });
   });
 
+  describe('@returns', () => {
+    function testReturns(comments, expected) {
+      if (!Array.isArray(comments)) {
+        comments = [comments]; // eslint-disable-line no-param-reassign
+      }
+
+      // This is sketchy... but it works
+      assert.deepEqual(docs(`
+        /*
+${comments.map(comment => `           * @returns ${comment}`).join('\n')}
+         */
+      `)[0].returns, expected);
+    }
+
+    it('should extract primitives from comments', () => {
+      testReturns('{string} name Name of the user', {
+        type: 'string',
+        title: 'name',
+        description: 'Name of the user',
+      });
+    });
+
+    it('should extract arrays of primitives from comments', () => {
+      testReturns('{string[]} interests Interests of the user', {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        title: 'interests',
+        description: 'Interests of the user',
+      });
+    });
+
+    it('should correctly work with object arrays', () => {
+      testReturns('{Object[]} interests Interests of the user', {
+        type: 'array',
+        items: {
+          type: 'object',
+        },
+        title: 'interests',
+        description: 'Interests of the user',
+      });
+    });
+
+    it('should extract objects ', () => {
+      testReturns('{Object} address Address of the user', {
+        type: 'object',
+        title: 'address',
+        description: 'Address of the user',
+      });
+    });
+
+    it('should extract nested objects', () => {
+      testReturns([
+        '{Object} address Address of the user',
+        '{string} address.street Street of the user',
+        '{string} address.city City of the user',
+        '{string} address.state State of the user',
+        '{string} address.zip Zip code of the user',
+      ], {
+        type: 'object',
+        title: 'address',
+        description: 'Address of the user',
+        properties: {
+          street: { type: 'string', description: 'Street of the user' },
+          city: { type: 'string', description: 'City of the user' },
+          state: { type: 'string', description: 'State of the user' },
+          zip: { type: 'string', description: 'Zip code of the user' },
+        },
+      });
+    });
+
+    it('should extract arrays of nested objects', () => {
+      testReturns([
+        '{Object[]} favouriteFoods Favourite foods of the user',
+        '{string} favouriteFoods[].cuisine Name of the cuisine',
+        '{string} favouriteFoods[].dish Favourite dish',
+      ], {
+        type: 'array',
+        title: 'favouriteFoods',
+        description: 'Favourite foods of the user',
+        items: {
+          type: 'object',
+          properties: {
+            cuisine: {
+              type: 'string',
+              description: 'Name of the cuisine',
+            },
+            dish: {
+              type: 'string',
+              description: 'Favourite dish',
+            },
+          },
+        },
+      });
+    });
+
+    it('should work for recursively nested objects');
+
+    it('should only take the first return value', () => {
+      testReturns([
+        '{string} name Name of the user',
+        '{string} name1 Name of the user1',
+      ], {
+        type: 'string',
+        title: 'name',
+        description: 'Name of the user',
+      });
+    });
+  });
+
   describe('complete example', () => {
     it('should work for a full example', () => {
       const actual = fs.readFileSync(`${__dirname}/fixtures/actual.js`);

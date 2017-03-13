@@ -17,6 +17,7 @@ function parseComment(comment) {
     description: nameDescription.description,
     params: parseParams(getTags(comment, 'param')),
     throws: parseThrows(getTags(comment, 'throws')),
+    returns: parseParams(getTags(comment, 'returns'))[0],
   };
 }
 

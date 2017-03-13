@@ -68,7 +68,12 @@
         "type": "ValidationError",
         "description": "Must provide all required fields"
       }
-    ]
+    ],
+    "returns": {
+      "title": "user",
+      "description": "The saved user",
+      "type": "object"
+    }
   },
   {
     "name": "deleteUser",
@@ -80,6 +85,11 @@
         "type": "number"
       }
     ],
-    "throws": []
+    "throws": [],
+    "returns": {
+      "title": "deleteSucceeded",
+      "description": "Whether the deletion was successful",
+      "type": "boolean"
+    }
   }
 ]
