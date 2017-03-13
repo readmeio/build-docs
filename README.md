@@ -28,7 +28,7 @@ const source = `
  *
  * @param {string} name Name of the user
  * @throws {ValidationError} Must provide all required fields
- * @returns {Object} user The created user object
+ * @returns {Object} The created user object
  */`;
 
 console.log(require('util').inspect(buildDocs(source), { depth: null }));
@@ -41,10 +41,7 @@ console.log(require('util').inspect(buildDocs(source), { depth: null }));
 //     throws:
 //      [ { type: 'ValidationError',
 //          description: 'Must provide all required fields' } ],
-//     returns:
-//      { title: 'user',
-//        description: 'The created user object',
-//        type: 'object' } } ]
+//     returns: { description: 'user The created user object', type: 'object' } } ]
 ```
 
 ### `const docs = buildDocs(source)`
@@ -141,11 +138,11 @@ We support the same syntax as [jsdoc](http://usejsdoc.org/tags-throws.html).
 ```
 
 #### `@returns`
-Exactly the same as [@param](#param), but only returning the first instance.
+We support the same syntax as [jsdoc](http://usejsdoc.org/tags-returns.html).
 
 ```js
 /*
- * @returns {string} name Name of the user
+ * @returns {string} Name of the user
  */
 ```
 

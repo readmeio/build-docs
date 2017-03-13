@@ -13,12 +13,12 @@
  * @param {string} favouriteFoods[].cuisine Name of the cuisine
  * @param {string} favouriteFoods[].dish Favourite dish
  * @throws {ValidationError} Must provide all required fields
- * @returns {Object} user The saved user
+ * @returns {Object} The saved user
  */
 
 /*
  * deleteUser: Deletes a user in the database
  *
  * @param {number} id Id of the user
- * @returns {boolean} deleteSucceeded Whether the deletion was successful
+ * @returns {boolean} Whether the deletion was successful
  */

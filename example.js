@@ -6,7 +6,7 @@ const source = `
  *
  * @param {string} name Name of the user
  * @throws {ValidationError} Must provide all required fields
- * @returns {Object} user The created user object
+ * @returns {Object} The created user object
  */`;
 
 console.log(require('util').inspect(buildDocs(source), { depth: null })); // eslint-disable-line no-console
@@ -19,7 +19,4 @@ console.log(require('util').inspect(buildDocs(source), { depth: null })); // esl
 //     throws:
 //      [ { type: 'ValidationError',
 //          description: 'Must provide all required fields' } ],
-//     returns:
-//      { title: 'user',
-//        description: 'The created user object',
-//        type: 'object' } } ]
+//     returns: { description: 'user The created user object', type: 'object' } } ]

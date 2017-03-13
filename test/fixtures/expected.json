@@ -70,7 +70,6 @@
       }
     ],
     "returns": {
-      "title": "user",
       "description": "The saved user",
       "type": "object"
     }
@@ -87,7 +86,6 @@
     ],
     "throws": [],
     "returns": {
-      "title": "deleteSucceeded",
       "description": "Whether the deletion was successful",
       "type": "boolean"
     }

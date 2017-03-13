@@ -2,6 +2,7 @@ const commentsParser = require('comments-parser');
 const parseDescription = require('./lib/description');
 const parseParams = require('./lib/params');
 const parseThrows = require('./lib/throws');
+const parseReturns = require('./lib/returns');
 const parseName = require('./lib/name');
 
 function getTags(parsed, t) {
@@ -17,7 +18,7 @@ function parseComment(comment) {
     description: nameDescription.description,
     params: parseParams(getTags(comment, 'param')),
     throws: parseThrows(getTags(comment, 'throws')),
-    returns: parseParams(getTags(comment, 'returns'))[0],
+    returns: parseReturns(getTags(comment, 'returns')),
   };
 }
 
