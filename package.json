@@ -1,6 +1,6 @@
 {
   "name": "build-docs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library to extract inline comments out of your services",
   "main": "index.js",
   "author": "dom@readme.io",
