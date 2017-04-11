@@ -177,6 +177,14 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
 
       testThrows(`${type} ${description}`, { type: type.replace(/{|}/g, ''), description });
     });
+
+    it('should work with template string format', () => {
+      const type = '{ValidationError}';
+      // eslint-disable-next-line no-template-curly-in-string
+      const description = 'Will throw an ${test} error if the argument is null ${x}';
+
+      testThrows(`${type} ${description}`, { type: type.replace(/{|}/g, ''), description });
+    });
   });
 
   describe('alternative comment styles', () => {
