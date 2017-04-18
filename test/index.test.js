@@ -8,13 +8,25 @@ describe('build-docs', () => {
     const description = 'Creates a user in the database';
     assert.deepEqual(docs(`
       /*
-       * ${description}
+       * name: ${description}
        */
 
       /*
-       * ${description}
+       * name2: ${description}
        */
     `).map(a => a.description), [description, description]);
+  });
+
+  it('should ignore comments without name', () => {
+    const name = 'name';
+    const description = 'Creates a user in the database';
+    assert.deepEqual(docs(`
+      /*
+       * ${name}: ${description}
+       */
+
+      // console.log('test')
+    `, [name]).map(doc => ({ name: doc.name, description: doc.description })), [{ name, description }]);
   });
 
   describe('description', () => {
@@ -22,7 +34,7 @@ describe('build-docs', () => {
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-         * ${description}
+         * name: ${description}
          */
       `)[0].description, description);
     });
@@ -49,7 +61,7 @@ describe('build-docs', () => {
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /*
+        /* name: description
 ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          */
       `)[0].params, expected);
@@ -153,7 +165,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /*
+        /* name: description
 ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
       `)[0].throws, expected);
@@ -204,7 +216,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-          ${description}
+          name: ${description}
          */
       `)[0].description, description);
     });
@@ -217,6 +229,31 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          * action: Description
          */
       `)[0].name, 'action');
+    });
+
+    it('should default to name if no description', () => {
+      assert.equal(docs(`
+        /*
+         * action
+         */
+      `)[0].name, 'action');
+    });
+
+    it('should add missing actions', () => {
+      assert.equal(docs(`
+        /*
+         * action: description
+         */
+      `, ['action', 'test'])[1].name, 'test');
+    });
+
+    it('should remove docs for missing actions', () => {
+      assert.equal(docs(`
+        /*
+         * action: description
+         * notFound: description
+         */
+      `, ['action']).length, 1);
     });
 
     it('should add it with @name', () => {
@@ -239,24 +276,6 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
       `)[0].name, 'action');
     });
-
-    it('should favour the former over the latter', () => {
-      assert.equal(docs(`
-        /*
-         * action: Description
-         *
-         * @name action1
-         */
-      `)[0].name, 'action');
-    });
-
-    it('should default to empty string', () => {
-      assert.equal(docs(`
-        /*
-         * Description
-         */
-      `)[0].name, '');
-    });
   });
 
   describe('@returns', () => {
@@ -267,7 +286,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /*
+        /* name: description
 ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
          */
       `)[0].returns, expected);
@@ -283,7 +302,7 @@ ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
     it('should return null if no @returns', () => {
       assert.equal(String(docs(`
         /*
-         * test
+         * name: test
          */
       `)[0].returns), 'null');
     });
