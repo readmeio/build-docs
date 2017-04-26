@@ -34,14 +34,11 @@ module.exports = function extract(source, actions = []) {
   });
 
   // Add missing actions to docs
-  for (const action of actions) {
-    let found = false;
-    for (const doc of docs) {
-      if (doc.name === action) found = true;
-    }
-    if (!found) {
+  actions.forEach((action) => {
+    if (!docs.find(doc => doc.name === action)) {
       docs.push({ name: action, description: '' });
     }
-  }
+  });
+
   return docs;
 };
