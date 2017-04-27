@@ -26,6 +26,9 @@ const source = `
 /*
  * createUser: Creates a user in the database
  *
+ * This creates a user in the database. Here you can add a
+ * full description.
+ *
  * @param {string} name Name of the user
  * @throws {ValidationError} Must provide all required fields
  * @returns {Object} The created user object
@@ -34,6 +37,7 @@ const source = `
 console.log(require('util').inspect(buildDocs(source), { depth: null }));
 // [ { name: 'createUser',
 //     description: 'Creates a user in the database',
+//     fullDescription: 'This creates a user in the database. Here you can add a full description.',
 //     params:
 //      [ { title: 'name',
 //          description: 'Name of the user',
@@ -41,7 +45,7 @@ console.log(require('util').inspect(buildDocs(source), { depth: null }));
 //     throws:
 //      [ { type: 'ValidationError',
 //          description: 'Must provide all required fields' } ],
-//     returns: { description: 'user The created user object', type: 'object' } } ]
+//     returns: { description: 'The created user object', type: 'object' } } ]
 ```
 
 ### `const docs = buildDocs(source)`
@@ -52,6 +56,7 @@ The object returned is an array of objects with the following properties:
 
 - `name` - the name of the action - [docs](#name)
 - `description` - the description of the action - [docs](#description)
+- `fullDescription` - a longer description of the action which can be multiline - [docs](#fullDescription)
 - `params` - an array of the `@param` comment types - [docs](#param)
 - `throws` - an array of the `@throws` comment types - [docs](#throws)
 
@@ -80,6 +85,18 @@ Description is written as the first line of text in your block comment
 ```js
 /*
  * Function description
+ */
+```
+
+#### `fullDescription`
+Full description is written as 2nd first line of text in your block comment
+
+```js
+/*
+ * Normal description
+ *
+ * This part becomes the full description
+ * and it can be on multiple lines
  */
 ```
 

@@ -1,5 +1,6 @@
 const commentsParser = require('comments-parser');
 const parseDescription = require('./lib/description');
+const parseFullDescription = require('./lib/full-description');
 const parseParams = require('./lib/params');
 const parseThrows = require('./lib/throws');
 const parseReturns = require('./lib/returns');
@@ -12,10 +13,11 @@ function getTags(parsed, t) {
 }
 
 function parseComment(comment) {
-  const nameDescription = parseDescription(comment.lines);
+  const nameDescription = parseDescription(comment.lines[0]);
   return {
     name: parseName(nameDescription.name, getTags(comment, 'name')),
     description: nameDescription.description,
+    fullDescription: parseFullDescription(comment.lines),
     params: parseParams(getTags(comment, 'param')),
     throws: parseThrows(getTags(comment, 'throws')),
     returns: parseReturns(getTags(comment, 'returns')),
@@ -34,14 +36,11 @@ module.exports = function extract(source, actions = []) {
   });
 
   // Add missing actions to docs
-  for (const action of actions) {
-    let found = false;
-    for (const doc of docs) {
-      if (doc.name === action) found = true;
-    }
-    if (!found) {
+  actions.forEach((action) => {
+    if (!docs.find(doc => doc.name === action)) {
       docs.push({ name: action, description: '' });
     }
-  }
+  });
+
   return docs;
 };
