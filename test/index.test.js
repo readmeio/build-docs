@@ -39,13 +39,62 @@ describe('build-docs', () => {
       `)[0].description, description);
     });
 
-    it('should remove the action if set', () => {
+    it('should not pick up the full description', () => {
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-         * action: ${description}
+         * name: ${description}
+         *
+         * Full description
          */
       `)[0].description, description);
+    });
+  });
+
+  describe('fullDescription', () => {
+    it('should extract the fullDescription', () => {
+      const fullDescription = 'Creates a user in the database';
+      const fullDescriptions = docs(`
+        /*
+         * name: description
+         * ${fullDescription}
+         * @param {string} name Name of the user
+         */
+
+         /*
+          * name: description
+          *
+          * ${fullDescription}
+          */
+
+          /*
+           * name: description
+           *
+           * ${fullDescription}
+           * @param {string} name Name of the user
+           */
+      `).map(doc => doc.fullDescription);
+
+      fullDescriptions.map(fullDesc => assert.equal(fullDesc, fullDescription));
+    });
+
+    it('should extract multi-line fullDescription', () => {
+      const multiLineFullDescription = ['line-1', 'line-2', 'line-3'];
+      assert.equal(docs(`
+        /*
+         * name: description
+${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
+         * @param {string} name Name of the user
+         */
+      `)[0].fullDescription, multiLineFullDescription.join(' '));
+    });
+
+    it('should default to empty string', () => {
+      assert.deepEqual(docs(`
+        /*
+         * name: description
+         */
+      `)[0].fullDescription, '');
     });
   });
 

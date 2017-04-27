@@ -2,6 +2,7 @@
   {
     "name": "createUser",
     "description": "Creates a user in the database",
+    "fullDescription": "Dolore dolore aute nisi est enim dolor cupidatat aute incididunt sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt laborum et enim ut laboris non consequat in fugiat eu duis sint.",
     "params": [
       {
         "title": "name",
@@ -77,6 +78,7 @@
   {
     "name": "deleteUser",
     "description": "Deletes a user in the database",
+    "fullDescription": "",
     "params": [
       {
         "title": "id",

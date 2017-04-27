@@ -1,6 +1,10 @@
 /*
  * createUser: Creates a user in the database
  *
+ * Dolore dolore aute nisi est enim dolor cupidatat aute incididunt
+ * sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt
+ * laborum et enim ut laboris non consequat in fugiat eu duis sint.
+ *
  * @param {string} name Name of the user
  * @param {number} age Age of the user
  * @param {string[]} interests Interests of the user
