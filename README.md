@@ -20,7 +20,7 @@ yarn add build-docs
 ## Usage
 
 ```js
-const buildDocs = require('./');
+const buildDocs = require('build-docs');
 
 const source = `
 /*
@@ -34,7 +34,7 @@ const source = `
  * @returns {Object} The created user object
  */`;
 
-console.log(require('util').inspect(buildDocs(source), { depth: null })); // eslint-disable-line no-console
+console.log(require('util').inspect(buildDocs(source), { depth: null }));
 // [ { name: 'createUser',
 //     description: 'Creates a user in the database',
 //     fullDescription: 'This creates a user in the database. Here you can add a full description.',
