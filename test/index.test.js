@@ -328,6 +328,36 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
   });
 
   describe('@returns', () => {
+    function testSecrets(comments, expected) {
+      if (!Array.isArray(comments)) {
+        comments = [comments]; // eslint-disable-line no-param-reassign
+      }
+
+      // This is sketchy... but it works
+      assert.deepEqual(docs(`
+        /* name: description
+${comments.map(comment => `           * @secret ${comment}`).join('\n')}
+         */
+      `)[0].secrets[0], expected);
+    }
+
+    it('should get key and description', () => {
+      testSecrets('key Description of the secret', {
+        key: 'key',
+        description: 'Description of the secret',
+      });
+    });
+
+    it('should return an empty array if no @secret', () => {
+      assert.equal(docs(`
+        /*
+         * name: test
+         */
+      `)[0].secrets.length, 0);
+    });
+  });
+
+  describe('@returns', () => {
     function testReturns(comments, expected) {
       if (!Array.isArray(comments)) {
         comments = [comments]; // eslint-disable-line no-param-reassign

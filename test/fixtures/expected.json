@@ -70,6 +70,7 @@
         "description": "Must provide all required fields"
       }
     ],
+    "secrets": [],
     "returns": {
       "description": "The saved user",
       "type": "object"
@@ -87,6 +88,7 @@
       }
     ],
     "throws": [],
+    "secrets": [],
     "returns": {
       "description": "Whether the deletion was successful",
       "type": "boolean"
