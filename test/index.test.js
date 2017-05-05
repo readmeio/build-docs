@@ -116,6 +116,14 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       `)[0].params, expected);
     }
 
+    it('should allow dash between name and description', () => {
+      testParam('{string} name - Name of the user', {
+        type: 'string',
+        title: 'name',
+        description: 'Name of the user',
+      });
+    });
+
     it('should extract primitives from comments', () => {
       testParam('{string} name Name of the user', {
         type: 'string',
