@@ -2,6 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 
 const docs = require('../');
+const { JSON_SCHEMA_TYPES } = require('../lib/set-type');
 
 describe('build-docs', () => {
   it('should work for multiple blocks', () => {
@@ -115,6 +116,38 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          */
       `)[0].params, expected);
     }
+
+    function testInvalidType(type) {
+      assert.throws(() => {
+        docs(`
+        /* name: description
+         * @param {${type}} name - name of the user
+         */`);
+      }, /Invalid type - Must be a valid JSON schema primitive./);
+    }
+
+    it('should throw for invalid type', () => {
+      testInvalidType('asddsadsadsa');
+      testInvalidType('BOOLEAN');
+      testInvalidType('String');
+      testInvalidType('BOOLEAN[]');
+    });
+
+    function testValidType(type) {
+      assert.doesNotThrow(() => {
+        docs(`
+        /* name: description
+         * @param {${type}} name - name of the user
+         */`);
+      });
+    }
+
+    // http://json-schema.org/latest/json-schema-core.html#rfc.section.4.2
+    it('should not throw for valid types', () => {
+      JSON_SCHEMA_TYPES.map(testValidType);
+      testValidType('string[]');
+      testValidType('number[]');
+    });
 
     it('should allow dash between name and description', () => {
       testParam('{string} name - Name of the user', {
@@ -335,7 +368,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
     });
   });
 
-  describe('@returns', () => {
+  describe('@secret', () => {
     function testSecrets(comments, expected) {
       if (!Array.isArray(comments)) {
         comments = [comments]; // eslint-disable-line no-param-reassign

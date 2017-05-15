@@ -11,5 +11,9 @@
 
     // Allow _id
     "no-underscore-dangle": ["error", { "allow": ["_id", "__v"] }],
+
+    // Allows functions to be used before they're defined
+    // Functions are always hoisted so this is fine
+    "no-use-before-define": ["error", { "functions": false, "classes": true }]
   }
 }
