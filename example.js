@@ -8,6 +8,7 @@ const source = `
  * full description.
  *
  * @param {string} name Name of the user
+ * @secret apiKey This is a secret value that will be required
  * @throws {ValidationError} Must provide all required fields
  * @returns {Object} The created user object
  */`;
@@ -23,4 +24,7 @@ console.log(require('util').inspect(buildDocs(source), { depth: null })); // esl
 //     throws:
 //      [ { type: 'ValidationError',
 //          description: 'Must provide all required fields' } ],
+//     secrets:
+//      [ { key: 'apiKey',
+//          description: 'This is a secret value that will be required' } ],
 //     returns: { description: 'The created user object', type: 'object' } } ]

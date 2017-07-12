@@ -30,11 +30,12 @@ const source = `
  * full description.
  *
  * @param {string} name Name of the user
+ * @secret apiKey This is a secret value that will be required
  * @throws {ValidationError} Must provide all required fields
  * @returns {Object} The created user object
  */`;
 
-console.log(require('util').inspect(buildDocs(source), { depth: null }));
+console.log(require('util').inspect(buildDocs(source), { depth: null })); // eslint-disable-line no-console
 // [ { name: 'createUser',
 //     description: 'Creates a user in the database',
 //     fullDescription: 'This creates a user in the database. Here you can add a full description.',
@@ -45,6 +46,9 @@ console.log(require('util').inspect(buildDocs(source), { depth: null }));
 //     throws:
 //      [ { type: 'ValidationError',
 //          description: 'Must provide all required fields' } ],
+//     secrets:
+//      [ { key: 'apiKey',
+//          description: 'This is a secret value that will be required' } ],
 //     returns: { description: 'The created user object', type: 'object' } } ]
 ```
 
@@ -58,6 +62,7 @@ The object returned is an array of objects with the following properties:
 - `description` - the description of the action - [docs](#description)
 - `fullDescription` - a longer description of the action which can be multiline - [docs](#fullDescription)
 - `params` - an array of the `@param` comment types - [docs](#param)
+- `secrets` - an array of the `@secret` comment types - [docs](#secret)
 - `throws` - an array of the `@throws` comment types - [docs](#throws)
 
 #### `name`
@@ -113,11 +118,12 @@ Primitive types:
  */
 ```
 
-Arrays:
+#### `@secret`
+If your service requires secret values from your users, this is how you request and access them.
 
 ```js
 /*
- * @param {string[]} interests Interests of the user
+ * @secret key Description of the secret
  */
 ```
 
