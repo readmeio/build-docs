@@ -127,28 +127,6 @@ If your service requires secret values from your users, this is how you request 
  */
 ```
 
-Objects with nested properties:
-
-```js
-/*
- * @param {Object} address Address of the user
- * @param {string} address.street Street of the user
- * @param {string} address.city City of the user
- * @param {string} address.state State of the user
- * @param {string} address.zip Zip code of the user
- */
-```
-
-Arrays of objects with nested properties
-
-```js
-/*
- * @param {Object[]} favouriteFoods Favourite foods of the user
- * @param {string} favouriteFoods[].cuisine Name of the cuisine
- * @param {string} favouriteFoods[].dish Favourite dish
- */
-```
-
 #### `@throws`
 We support the same syntax as [jsdoc](http://usejsdoc.org/tags-throws.html).
 

@@ -133,8 +133,28 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       testInvalidType('BOOLEAN[]');
     });
 
+    it('should not allow objects', () => {
+      assert.throws(() => {
+        docs(`
+        /* name: description
+         * @param {object} name - name of the user
+         */`);
+      }, /Error: Nested objects are not supported./);
+    });
+
+    it('should not allow array of objects', () => {
+      assert.throws(() => {
+        docs(`
+        /* name: description
+         * @param {Object[]} users - users
+         * @param {string} users.name - users
+         */`);
+      }, /Error: Nested objects are not supported./);
+    });
+
     function testValidType(type) {
-      assert.doesNotThrow(() => {
+      if (type === 'object') return assert(true);
+      return assert.doesNotThrow(() => {
         docs(`
         /* name: description
          * @param {${type}} name - name of the user
@@ -175,72 +195,6 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         description: 'Interests of the user',
       });
     });
-
-    it('should correctly work with object arrays', () => {
-      testParam('{Object[]} interests Interests of the user', {
-        type: 'array',
-        items: {
-          type: 'object',
-        },
-        title: 'interests',
-        description: 'Interests of the user',
-      });
-    });
-
-    it('should extract objects ', () => {
-      testParam('{Object} address Address of the user', {
-        type: 'object',
-        title: 'address',
-        description: 'Address of the user',
-      });
-    });
-
-    it('should extract nested objects', () => {
-      testParam([
-        '{Object} address Address of the user',
-        '{string} address.street Street of the user',
-        '{string} address.city City of the user',
-        '{string} address.state State of the user',
-        '{string} address.zip Zip code of the user',
-      ], {
-        type: 'object',
-        title: 'address',
-        description: 'Address of the user',
-        properties: {
-          street: { type: 'string', description: 'Street of the user' },
-          city: { type: 'string', description: 'City of the user' },
-          state: { type: 'string', description: 'State of the user' },
-          zip: { type: 'string', description: 'Zip code of the user' },
-        },
-      });
-    });
-
-    it('should extract arrays of nested objects', () => {
-      testParam([
-        '{Object[]} favouriteFoods Favourite foods of the user',
-        '{string} favouriteFoods[].cuisine Name of the cuisine',
-        '{string} favouriteFoods[].dish Favourite dish',
-      ], {
-        type: 'array',
-        title: 'favouriteFoods',
-        description: 'Favourite foods of the user',
-        items: {
-          type: 'object',
-          properties: {
-            cuisine: {
-              type: 'string',
-              description: 'Name of the cuisine',
-            },
-            dish: {
-              type: 'string',
-              description: 'Favourite dish',
-            },
-          },
-        },
-      });
-    });
-
-    it('should work for recursively nested objects');
   });
 
   describe('@throws', () => {

@@ -21,47 +21,6 @@
         "items": {
           "type": "string"
         }
-      },
-      {
-        "title": "address",
-        "description": "Address of the user",
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string",
-            "description": "Street of the user"
-          },
-          "city": {
-            "type": "string",
-            "description": "City of the user"
-          },
-          "state": {
-            "type": "string",
-            "description": "State of the user"
-          },
-          "zip": {
-            "type": "string",
-            "description": "Zip code of the user"
-          }
-        }
-      },
-      {
-        "title": "favouriteFoods",
-        "description": "Favourite foods of the user",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "cuisine": {
-              "type": "string",
-              "description": "Name of the cuisine"
-            },
-            "dish": {
-              "type": "string",
-              "description": "Favourite dish"
-            }
-          }
-        }
       }
     ],
     "throws": [
