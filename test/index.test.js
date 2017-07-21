@@ -139,7 +139,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         /* name: description
          * @param {object} name - name of the user
          */`);
-      }, /Error: Nested objects are not supported./);
+      }, /Invalid Param - Nested objects are not supported./);
     });
 
     it('should not allow array of objects', () => {
@@ -149,7 +149,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          * @param {Object[]} users - users
          * @param {string} users.name - users
          */`);
-      }, /Error: Nested objects are not supported./);
+      }, /Invalid Param - Nested objects are not supported./);
     });
 
     function testValidType(type) {
