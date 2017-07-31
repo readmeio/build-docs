@@ -27,7 +27,7 @@ function parseComment(comment) {
 }
 
 module.exports = function extract(source, actions = []) {
-  const parsed = commentsParser(source);
+  const parsed = commentsParser(source.toString());
 
   // Filter out docs that aren't actions
   const docs = parsed.map(parseComment).filter((doc) => {

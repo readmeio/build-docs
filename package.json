@@ -19,6 +19,6 @@
     "nyc": "^10.1.2"
   },
   "dependencies": {
-    "comments-parser": "^1.0.0"
+    "comments-parser": "github:readmeio/node-comments-parser"
   }
 }
