@@ -128,9 +128,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
 
     it('should throw for invalid type', () => {
       testInvalidType('asddsadsadsa');
-      testInvalidType('BOOLEAN');
-      testInvalidType('String');
-      testInvalidType('BOOLEAN[]');
+      testInvalidType('BOOLEANS[]');
     });
 
     it('should not allow objects', () => {
@@ -167,6 +165,14 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       JSON_SCHEMA_TYPES.map(testValidType);
       testValidType('string[]');
       testValidType('number[]');
+    });
+
+    it('should allow any casing for type', () => {
+      testParam('{String} name - Name of the user', {
+        type: 'string',
+        title: 'name',
+        description: 'Name of the user',
+      });
     });
 
     it('should allow dash between name and description', () => {
