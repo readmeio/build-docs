@@ -123,7 +123,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         /* name: description
          * @param {${type}} name - name of the user
          */`);
-      }, /Invalid type - Must be a valid JSON schema primitive./);
+      }, /Invalid type ".*" - Type must be: null, boolean, object, array, number, string/);
     }
 
     it('should throw for invalid type', () => {
