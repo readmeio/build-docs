@@ -13,7 +13,7 @@
       {
         "title": "age",
         "description": "Age of the user",
-        "exampleData": "12",
+        "exampleData": 12,
         "type": "number"
       },
       {

@@ -155,7 +155,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       return assert.doesNotThrow(() => {
         docs(`
         /* name: description
-         * @param {${type}} name="Marc Cuva" - name of the user
+         * @param {${type}} name - name of the user
          */`);
       });
     }
@@ -217,6 +217,36 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         title: 'name',
         exampleData: 'Marc',
         description: 'Name of the user',
+      });
+    });
+
+    it('should extract number exampleData', () => {
+      testParam('{number} name=12 Age of the user', {
+        type: 'number',
+        title: 'name',
+        exampleData: 12,
+        description: 'Age of the user',
+      });
+    });
+
+    it('should extract boolean exampleData', () => {
+      testParam('{boolean} bald=false - Is the user bald', {
+        type: 'boolean',
+        title: 'bald',
+        exampleData: false,
+        description: 'Is the user bald',
+      });
+    });
+
+    it('should extract array exampleData', () => {
+      testParam('{number[]} numbers=[1,2,3] - Array of numbers', {
+        type: 'array',
+        title: 'numbers',
+        exampleData: [1, 2, 3],
+        items: {
+          type: 'number',
+        },
+        description: 'Array of numbers',
       });
     });
   });
