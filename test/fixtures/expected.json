@@ -7,11 +7,13 @@
       {
         "title": "name",
         "description": "Name of the user",
+        "default": "Marc Cuva",
         "type": "string"
       },
       {
         "title": "age",
         "description": "Age of the user",
+        "default": "12",
         "type": "number"
       },
       {

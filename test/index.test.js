@@ -155,7 +155,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       return assert.doesNotThrow(() => {
         docs(`
         /* name: description
-         * @param {${type}} name - name of the user
+         * @param {${type}} name="Marc Cuva" - name of the user
          */`);
       });
     }
@@ -199,6 +199,24 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         },
         title: 'interests',
         description: 'Interests of the user',
+      });
+    });
+
+    it('should extract multi word default', () => {
+      testParam('{string} name="Marc Cuva" Name of the user', {
+        type: 'string',
+        title: 'name',
+        default: 'Marc Cuva',
+        description: 'Name of the user',
+      });
+    });
+
+    it('should extract single word default', () => {
+      testParam('{string} name=Marc Name of the user', {
+        type: 'string',
+        title: 'name',
+        default: 'Marc',
+        description: 'Name of the user',
       });
     });
   });

@@ -5,8 +5,8 @@
  * sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt
  * laborum et enim ut laboris non consequat in fugiat eu duis sint.
  *
- * @param {string} name Name of the user
- * @param {number} age Age of the user
+ * @param {string} name="Marc Cuva" Name of the user
+ * @param {number} age=12 Age of the user
  * @param {string[]} interests Interests of the user
  * @throws {ValidationError} Must provide all required fields
  * @returns {Object} The saved user
