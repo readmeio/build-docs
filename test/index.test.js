@@ -202,20 +202,20 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       });
     });
 
-    it('should extract multi word default', () => {
+    it('should extract multi word exampleData', () => {
       testParam('{string} name="Marc Cuva" Name of the user', {
         type: 'string',
         title: 'name',
-        default: 'Marc Cuva',
+        exampleData: 'Marc Cuva',
         description: 'Name of the user',
       });
     });
 
-    it('should extract single word default', () => {
+    it('should extract single word exampleData', () => {
       testParam('{string} name=Marc Name of the user', {
         type: 'string',
         title: 'name',
-        default: 'Marc',
+        exampleData: 'Marc',
         description: 'Name of the user',
       });
     });
