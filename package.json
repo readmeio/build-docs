@@ -20,6 +20,7 @@
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "comments-parser": "github:readmeio/node-comments-parser"
+    "comments-parser": "github:readmeio/node-comments-parser",
+    "lodash.template": "^4.4.0"
   }
 }

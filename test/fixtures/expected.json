@@ -30,6 +30,7 @@
       "description": "Must provide all required fields"
     }
   ],
+  "errors": {},
   "secrets": [],
   "returns": {
     "description": "The saved user",

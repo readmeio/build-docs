@@ -304,6 +304,37 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
     });
   });
 
+  describe('errors', () => {
+    it('should export an object of error types and compiled template functions', () => {
+      const errors = docs([
+        '/*',
+        // eslint-disable-next-line no-template-curly-in-string
+        '* @throws {ValidationError} Will throw an ${test} error if the argument is null ${x}',
+        // eslint-disable-next-line no-template-curly-in-string
+        '* @throws {AnotherError} You cant do ${y}',
+        '*/',
+      ].join('\n')).errors;
+
+      assert.deepEqual(Object.keys(errors), ['ValidationError', 'AnotherError']);
+      assert.deepEqual(errors.ValidationError({ test: 'a', x: 'b' }),
+        'Will throw an a error if the argument is null b');
+      assert.deepEqual(errors.AnotherError({ y: 'c' }), 'You cant do c');
+    });
+
+    describe('toString()', () => {
+      it('should output source code', () => {
+        const errors = docs([
+          '/*',
+          // eslint-disable-next-line no-template-curly-in-string
+          '* @throws {ValidationError} Will throw an ${test} error if the argument is null ${x}',
+          '*/',
+        ].join('\n')).errors;
+
+        assert.equal(typeof errors.toString().ValidationError.toString(), 'string');
+      });
+    });
+  });
+
   describe('alternative comment styles', () => {
     // This style can't be supported because esprima picks each
     // line up as a new comment because technically it starts/ends

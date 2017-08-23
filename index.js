@@ -3,6 +3,7 @@ const parseDescription = require('./lib/description');
 const parseFullDescription = require('./lib/full-description');
 const parseParams = require('./lib/params');
 const parseThrows = require('./lib/throws');
+const buildErrors = require('./lib/errors');
 const parseReturns = require('./lib/returns');
 const parseSecrets = require('./lib/secrets');
 
@@ -13,12 +14,14 @@ function getTags(parsed, t) {
 }
 
 function parseComment(comment, name) {
+  const throws = parseThrows(getTags(comment, 'throws'));
   return {
     name,
     description: parseDescription(comment.lines[0]),
     fullDescription: parseFullDescription(comment.lines),
     params: parseParams(getTags(comment, 'param')),
-    throws: parseThrows(getTags(comment, 'throws')),
+    throws,
+    errors: buildErrors(throws),
     secrets: parseSecrets(getTags(comment, 'secret')),
     returns: parseReturns(getTags(comment, 'returns')),
   };
