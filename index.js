@@ -35,3 +35,5 @@ module.exports = function extract(source, name = '') {
 
   return parseComment(parsed[0]);
 };
+
+module.exports.parseDirectory = require('./parse-directory');
