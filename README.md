@@ -24,7 +24,7 @@ const buildDocs = require('build-docs');
 
 const source = `
 /*
- * createUser: Creates a user in the database
+ * Creates a user in the database
  *
  * This creates a user in the database. Here you can add a
  * full description.
@@ -35,28 +35,30 @@ const source = `
  * @returns {Object} The created user object
  */`;
 
-console.log(require('util').inspect(buildDocs(source), { depth: null })); // eslint-disable-line no-console
-// [ { name: 'createUser',
-//     description: 'Creates a user in the database',
-//     fullDescription: 'This creates a user in the database. Here you can add a full description.',
-//     params:
-//      [ { title: 'name',
-//          description: 'Name of the user',
-//          type: 'string' } ],
-//     throws:
-//      [ { type: 'ValidationError',
-//          description: 'Must provide all required fields' } ],
-//     secrets:
-//      [ { key: 'apiKey',
-//          description: 'This is a secret value that will be required' } ],
-//     returns: { description: 'The created user object', type: 'object' } } ]
+console.log(require('util').inspect(buildDocs(source, 'createUser'), { depth: null }));
+// { name: 'createUser',
+//   description: 'Creates a user in the database',
+//   fullDescription: 'This creates a user in the database. Here you can add a full description.',
+//   params:
+//    [ { title: 'name',
+//        description: 'Name of the user',
+//        type: 'string' } ],
+//   throws:
+//    [ { type: 'ValidationError',
+//        description: 'Must provide all required fields' } ],
+//   secrets:
+//    [ { key: 'apiKey',
+//        description: 'This is a secret value that will be required' } ],
+//   returns: { description: 'The created user object', type: 'object' } }
+
 ```
 
-### `const docs = buildDocs(source)`
+### `const doc = require('build-docs')(source, name)`
 
 - `source` is a string of source code with comments to parse
+- `name` is the name of the action
 
-The object returned is an array of objects with the following properties:
+The object returned is an object with the following properties:
 
 - `name` - the name of the action - [docs](#name)
 - `description` - the description of the action - [docs](#description)
@@ -64,25 +66,21 @@ The object returned is an array of objects with the following properties:
 - `params` - an array of the `@param` comment types - [docs](#param)
 - `secrets` - an array of the `@secret` comment types - [docs](#secret)
 - `throws` - an array of the `@throws` comment types - [docs](#throws)
+- `errors` - an object of all the possible errors from this action - [docs](#errors)
+- `returns` - an object describing the return type - [docs](#throws)
+
+### `const docs = require('build-docs').parseDirectory(directory)`
+
+There is also a function to make build-docs look inside a directory and
+parse docs out of all JS files in that directory. This uses the filename
+(minus the extension) for the name of the action.
+
+- `directory` is the folder
+
+This returns an array of docs in the same format as described above.
 
 #### `name`
-The name can be written in 2 different forms:
-
-As a string before your description:
-
-```js
-/*
- * name: function description
- */
-```
-
-Or using the `@name` block tag:
-
-```js
-/*
- * @name name
- */
-```
+The name is taken directly from the name you pass in
 
 #### `description`
 Description is written as the first line of text in your block comment
@@ -137,6 +135,25 @@ We support the same syntax as [jsdoc](http://usejsdoc.org/tags-throws.html).
  * @throws {JustAnErrorType}
  */
 ```
+
+#### `errors`
+For the following docs:
+
+```js
+/*
+ * @throws {ErrorType} free form error description
+ */
+```
+
+This will return an errors object like the following:
+
+```js
+{
+  ErrorType: function () {}
+}
+```
+
+The function is a compiled lodash template: https://lodash.com/docs/4.17.4#template
 
 #### `@returns`
 We support the same syntax as [jsdoc](http://usejsdoc.org/tags-returns.html).
