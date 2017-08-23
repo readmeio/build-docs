@@ -26,23 +26,12 @@ function parseComment(comment) {
   };
 }
 
-module.exports = function extract(source, actions = []) {
+module.exports = function extract(source, name = '') {
   const parsed = commentsParser(source.toString());
 
-  // Filter out docs that aren't actions
-  const docs = parsed.map(parseComment).filter((doc) => {
-    if (actions.length) {
-      return doc.name && actions.includes(doc.name);
-    }
-    return doc.name;
-  });
+  if (!parsed[0]) {
+    return { name };
+  }
 
-  // Add missing actions to docs
-  actions.forEach((action) => {
-    if (!docs.find(doc => doc.name === action)) {
-      docs.push({ name: action, description: '' });
-    }
-  });
-
-  return docs;
+  return parseComment(parsed[0]);
 };

@@ -1,58 +1,38 @@
-[
-  {
-    "name": "createUser",
-    "description": "Creates a user in the database",
-    "fullDescription": "Dolore dolore aute nisi est enim dolor cupidatat aute incididunt sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt laborum et enim ut laboris non consequat in fugiat eu duis sint.",
-    "params": [
-      {
-        "title": "name",
-        "description": "Name of the user",
-        "exampleData": "Marc Cuva",
+{
+  "name": "createUser",
+  "description": "Creates a user in the database",
+  "fullDescription": "Dolore dolore aute nisi est enim dolor cupidatat aute incididunt sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt laborum et enim ut laboris non consequat in fugiat eu duis sint.",
+  "params": [
+    {
+      "title": "name",
+      "description": "Name of the user",
+      "exampleData": "Marc Cuva",
+      "type": "string"
+    },
+    {
+      "title": "age",
+      "description": "Age of the user",
+      "exampleData": 12,
+      "type": "number"
+    },
+    {
+      "title": "interests",
+      "description": "Interests of the user",
+      "type": "array",
+      "items": {
         "type": "string"
-      },
-      {
-        "title": "age",
-        "description": "Age of the user",
-        "exampleData": 12,
-        "type": "number"
-      },
-      {
-        "title": "interests",
-        "description": "Interests of the user",
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
       }
-    ],
-    "throws": [
-      {
-        "type": "ValidationError",
-        "description": "Must provide all required fields"
-      }
-    ],
-    "secrets": [],
-    "returns": {
-      "description": "The saved user",
-      "type": "object"
     }
-  },
-  {
-    "name": "deleteUser",
-    "description": "Deletes a user in the database",
-    "fullDescription": "",
-    "params": [
-      {
-        "title": "id",
-        "description": "Id of the user",
-        "type": "number"
-      }
-    ],
-    "throws": [],
-    "secrets": [],
-    "returns": {
-      "description": "Whether the deletion was successful",
-      "type": "boolean"
+  ],
+  "throws": [
+    {
+      "type": "ValidationError",
+      "description": "Must provide all required fields"
     }
+  ],
+  "secrets": [],
+  "returns": {
+    "description": "The saved user",
+    "type": "object"
   }
-]
+}

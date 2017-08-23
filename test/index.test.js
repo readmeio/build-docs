@@ -5,7 +5,7 @@ const docs = require('../');
 const { JSON_SCHEMA_TYPES } = require('../lib/set-type');
 
 describe('build-docs', () => {
-  it('should work for multiple blocks', () => {
+  it('should return only the first block', () => {
     const description = 'Creates a user in the database';
     assert.deepEqual(docs(`
       /*
@@ -15,19 +15,28 @@ describe('build-docs', () => {
       /*
        * name2: ${description}
        */
-    `).map(a => a.description), [description, description]);
+    `).description, description);
+  });
+
+  it('should not error if there are no comments', () => {
+    assert.deepEqual(docs(`
+    module.exports = () => {}
+    `, 'helloWorld').name, 'helloWorld');
   });
 
   it('should ignore comments without name', () => {
     const name = 'name';
     const description = 'Creates a user in the database';
-    assert.deepEqual(docs(`
+    const doc = docs(`
       /*
        * ${name}: ${description}
        */
 
       // console.log('test')
-    `, [name]).map(doc => ({ name: doc.name, description: doc.description })), [{ name, description }]);
+    `, name);
+
+    assert.equal(doc.name, name);
+    assert.equal(doc.description, description);
   });
 
   describe('description', () => {
@@ -37,7 +46,7 @@ describe('build-docs', () => {
         /*
          * name: ${description}
          */
-      `)[0].description, description);
+      `).description, description);
     });
 
     it('should not pick up the full description', () => {
@@ -48,35 +57,33 @@ describe('build-docs', () => {
          *
          * Full description
          */
-      `)[0].description, description);
+      `).description, description);
     });
   });
 
   describe('fullDescription', () => {
     it('should extract the fullDescription', () => {
       const fullDescription = 'Creates a user in the database';
-      const fullDescriptions = docs(`
+      assert.equal(docs(`
         /*
          * name: description
          * ${fullDescription}
          * @param {string} name Name of the user
          */
 
-         /*
-          * name: description
-          *
-          * ${fullDescription}
-          */
+        /*
+         * name: description
+         *
+         * ${fullDescription}
+         */
 
-          /*
-           * name: description
-           *
-           * ${fullDescription}
-           * @param {string} name Name of the user
-           */
-      `).map(doc => doc.fullDescription);
-
-      fullDescriptions.map(fullDesc => assert.equal(fullDesc, fullDescription));
+        /*
+         * name: description
+         *
+         * ${fullDescription}
+         * @param {string} name Name of the user
+         */
+      `).fullDescription, fullDescription);
     });
 
     it('should extract multi-line fullDescription', () => {
@@ -87,7 +94,7 @@ describe('build-docs', () => {
 ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
          * @param {string} name Name of the user
          */
-      `)[0].fullDescription, multiLineFullDescription.join(' '));
+      `).fullDescription, multiLineFullDescription.join(' '));
     });
 
     it('should default to empty string', () => {
@@ -95,7 +102,7 @@ ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
         /*
          * name: description
          */
-      `)[0].fullDescription, '');
+      `).fullDescription, '');
     });
   });
 
@@ -114,7 +121,7 @@ ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
         /* name: description
 ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          */
-      `)[0].params, expected);
+      `).params, expected);
     }
 
     function testInvalidType(type) {
@@ -266,7 +273,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
         /* name: description
 ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
-      `)[0].throws, expected);
+      `).throws, expected);
     }
 
     it('should work with just a description', () => {
@@ -307,7 +314,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         //
         // ${description}
         //
-      `)[0].description, description);
+      `).description, description);
     });
 
     it('marc-style comments', () => {
@@ -316,7 +323,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         /*
           name: ${description}
          */
-      `)[0].description, description);
+      `).description, description);
     });
   });
 
@@ -326,7 +333,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         /*
          * action: Description
          */
-      `)[0].name, 'action');
+      `).name, 'action');
     });
 
     it('should default to name if no description', () => {
@@ -334,24 +341,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         /*
          * action
          */
-      `)[0].name, 'action');
-    });
-
-    it('should add missing actions', () => {
-      assert.equal(docs(`
-        /*
-         * action: description
-         */
-      `, ['action', 'test'])[1].name, 'test');
-    });
-
-    it('should remove docs for missing actions', () => {
-      assert.equal(docs(`
-        /*
-         * action: description
-         * notFound: description
-         */
-      `, ['action']).length, 1);
+      `).name, 'action');
     });
 
     it('should add it with @name', () => {
@@ -361,7 +351,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          *
          * @name action
          */
-      `)[0].name, 'action');
+      `).name, 'action');
     });
 
     it('should take the first @name', () => {
@@ -372,7 +362,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          * @name action
          * @name action1
          */
-      `)[0].name, 'action');
+      `).name, 'action');
     });
   });
 
@@ -387,7 +377,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
         /* name: description
 ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
          */
-      `)[0].secrets[0], expected);
+      `).secrets[0], expected);
     }
 
     it('should get key and description', () => {
@@ -402,7 +392,7 @@ ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
         /*
          * name: test
          */
-      `)[0].secrets.length, 0);
+      `).secrets.length, 0);
     });
   });
 
@@ -417,7 +407,7 @@ ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
         /* name: description
 ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
          */
-      `)[0].returns, expected);
+      `).returns, expected);
     }
 
     it('should extract primitives from comments', () => {
@@ -432,7 +422,7 @@ ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
         /*
          * name: test
          */
-      `)[0].returns), 'null');
+      `).returns), 'null');
     });
 
     it('should extract arrays of primitives from comments', () => {
