@@ -1,5 +1,5 @@
 /*
- * createUser: Creates a user in the database
+ * Creates a user in the database
  *
  * Dolore dolore aute nisi est enim dolor cupidatat aute incididunt
  * sit commodo in sit eiusmod nostrud eu ea enim quis velit et sunt

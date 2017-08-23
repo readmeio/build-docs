@@ -4,7 +4,6 @@ const parseFullDescription = require('./lib/full-description');
 const parseParams = require('./lib/params');
 const parseThrows = require('./lib/throws');
 const parseReturns = require('./lib/returns');
-const parseName = require('./lib/name');
 const parseSecrets = require('./lib/secrets');
 
 function getTags(parsed, t) {
@@ -13,11 +12,10 @@ function getTags(parsed, t) {
     .map(p => p.value);
 }
 
-function parseComment(comment) {
-  const nameDescription = parseDescription(comment.lines[0]);
+function parseComment(comment, name) {
   return {
-    name: parseName(nameDescription.name, getTags(comment, 'name')),
-    description: nameDescription.description,
+    name,
+    description: parseDescription(comment.lines[0]),
     fullDescription: parseFullDescription(comment.lines),
     params: parseParams(getTags(comment, 'param')),
     throws: parseThrows(getTags(comment, 'throws')),
@@ -33,7 +31,7 @@ module.exports = function extract(source, name = '') {
     return { name };
   }
 
-  return parseComment(parsed[0]);
+  return parseComment(parsed[0], name);
 };
 
 module.exports.parseDirectory = require('./parse-directory');

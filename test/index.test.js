@@ -9,11 +9,11 @@ describe('build-docs', () => {
     const description = 'Creates a user in the database';
     assert.deepEqual(docs(`
       /*
-       * name: ${description}
+       * ${description}
        */
 
       /*
-       * name2: ${description}
+       * ${description}
        */
     `).description, description);
   });
@@ -29,7 +29,7 @@ describe('build-docs', () => {
     const description = 'Creates a user in the database';
     const doc = docs(`
       /*
-       * ${name}: ${description}
+       * ${description}
        */
 
       // console.log('test')
@@ -44,7 +44,7 @@ describe('build-docs', () => {
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-         * name: ${description}
+         * ${description}
          */
       `).description, description);
     });
@@ -53,7 +53,7 @@ describe('build-docs', () => {
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-         * name: ${description}
+         * ${description}
          *
          * Full description
          */
@@ -321,48 +321,9 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
       const description = 'Creates a user in the database';
       assert.deepEqual(docs(`
         /*
-          name: ${description}
+          ${description}
          */
       `).description, description);
-    });
-  });
-
-  describe('@name', () => {
-    it('should add a name based on the string before the description', () => {
-      assert.equal(docs(`
-        /*
-         * action: Description
-         */
-      `).name, 'action');
-    });
-
-    it('should default to name if no description', () => {
-      assert.equal(docs(`
-        /*
-         * action
-         */
-      `).name, 'action');
-    });
-
-    it('should add it with @name', () => {
-      assert.equal(docs(`
-        /*
-         * Description
-         *
-         * @name action
-         */
-      `).name, 'action');
-    });
-
-    it('should take the first @name', () => {
-      assert.equal(docs(`
-        /*
-         * Description
-         *
-         * @name action
-         * @name action1
-         */
-      `).name, 'action');
     });
   });
 
@@ -465,10 +426,10 @@ ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
 
   describe('complete example', () => {
     it('should work for a full example', () => {
-      const actual = fs.readFileSync(`${__dirname}/fixtures/actual.js`);
+      const actual = fs.readFileSync(`${__dirname}/fixtures/createUser.js`);
       const expected = fs.readFileSync(`${__dirname}/fixtures/expected.json`);
 
-      assert.deepEqual(`${JSON.stringify(docs(actual), null, 2)}\n`, expected.toString());
+      assert.deepEqual(`${JSON.stringify(docs(actual, 'createUser'), null, 2)}\n`, expected.toString());
     });
   });
 });
