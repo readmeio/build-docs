@@ -66,19 +66,19 @@ describe('build-docs', () => {
       const fullDescription = 'Creates a user in the database';
       assert.equal(docs(`
         /*
-         * name: description
+         * description
          * ${fullDescription}
          * @param {string} name Name of the user
          */
 
         /*
-         * name: description
+         * description
          *
          * ${fullDescription}
          */
 
         /*
-         * name: description
+         * description
          *
          * ${fullDescription}
          * @param {string} name Name of the user
@@ -90,7 +90,7 @@ describe('build-docs', () => {
       const multiLineFullDescription = ['line-1', 'line-2', 'line-3'];
       assert.equal(docs(`
         /*
-         * name: description
+         * description
 ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
          * @param {string} name Name of the user
          */
@@ -100,7 +100,7 @@ ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
     it('should default to empty string', () => {
       assert.deepEqual(docs(`
         /*
-         * name: description
+         * description
          */
       `).fullDescription, '');
     });
@@ -118,7 +118,7 @@ ${multiLineFullDescription.map(desc => `           * ${desc}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /* name: description
+        /* description
 ${comments.map(comment => `           * @param ${comment}`).join('\n')}
          */
       `).params, expected);
@@ -127,7 +127,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
     function testInvalidType(type) {
       assert.throws(() => {
         docs(`
-        /* name: description
+        /* description
          * @param {${type}} name - name of the user
          */`);
       }, /Invalid type ".*" - Type must be: null, boolean, object, array, number, string/);
@@ -141,7 +141,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
     it('should not allow objects', () => {
       assert.throws(() => {
         docs(`
-        /* name: description
+        /* description
          * @param {object} name - name of the user
          */`);
       }, /Invalid Param - Nested objects are not supported./);
@@ -150,7 +150,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
     it('should not allow array of objects', () => {
       assert.throws(() => {
         docs(`
-        /* name: description
+        /* description
          * @param {Object[]} users - users
          * @param {string} users.name - users
          */`);
@@ -161,7 +161,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
       if (type === 'object') return assert(true);
       return assert.doesNotThrow(() => {
         docs(`
-        /* name: description
+        /* description
          * @param {${type}} name - name of the user
          */`);
       });
@@ -270,7 +270,7 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /* name: description
+        /* description
 ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
       `).throws, expected);
@@ -335,7 +335,7 @@ ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /* name: description
+        /* description
 ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
          */
       `).secrets[0], expected);
@@ -351,7 +351,7 @@ ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
     it('should return an empty array if no @secret', () => {
       assert.equal(docs(`
         /*
-         * name: test
+         * test
          */
       `).secrets.length, 0);
     });
@@ -365,7 +365,7 @@ ${comments.map(comment => `           * @secret ${comment}`).join('\n')}
 
       // This is sketchy... but it works
       assert.deepEqual(docs(`
-        /* name: description
+        /* description
 ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
          */
       `).returns, expected);
@@ -381,7 +381,7 @@ ${comments.map(comment => `           * @returns ${comment}`).join('\n')}
     it('should return null if no @returns', () => {
       assert.equal(String(docs(`
         /*
-         * name: test
+         * test
          */
       `).returns), 'null');
     });
