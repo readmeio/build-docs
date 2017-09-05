@@ -274,6 +274,13 @@ ${comments.map(comment => `           * @param ${comment}`).join('\n')}
 ${comments.map(comment => `           * @throws ${comment}`).join('\n')}
          */
       `).throws, expected);
+
+      // Should also work with @error
+      assert.deepEqual(docs(`
+        /* description
+${comments.map(comment => `           * @error ${comment}`).join('\n')}
+         */
+      `).throws, expected);
     }
 
     it('should work with just a description', () => {
