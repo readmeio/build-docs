@@ -9,6 +9,7 @@
  * @param {number} age=12 Age of the user
  * @param {string[]} interests Interests of the user
  * @throws {ValidationError} Must provide all required fields
+ * @error {ValidationError2} Must provide all required fields
  * @returns {Object} The saved user
  */
 

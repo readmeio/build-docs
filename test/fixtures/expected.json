@@ -28,6 +28,10 @@
     {
       "type": "ValidationError",
       "description": "Must provide all required fields"
+    },
+    {
+      "type": "ValidationError2",
+      "description": "Must provide all required fields"
     }
   ],
   "errors": {},

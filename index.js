@@ -9,21 +9,21 @@ const parseSecrets = require('./lib/secrets');
 
 function getTags(parsed, t) {
   return parsed.tags
-    .filter(tag => tag.name === t)
+    .filter(tag => t.includes(tag.name))
     .map(p => p.value);
 }
 
 function parseComment(comment, name) {
-  const throws = parseThrows(getTags(comment, 'throws'));
+  const throws = parseThrows(getTags(comment, ['throws', 'error']));
   return {
     name,
     description: parseDescription(comment.lines[0]),
     fullDescription: parseFullDescription(comment.lines),
-    params: parseParams(getTags(comment, 'param')),
+    params: parseParams(getTags(comment, ['param'])),
     throws,
     errors: buildErrors(throws),
-    secrets: parseSecrets(getTags(comment, 'secret')),
-    returns: parseReturns(getTags(comment, 'returns')),
+    secrets: parseSecrets(getTags(comment, ['secret'])),
+    returns: parseReturns(getTags(comment, ['returns'])),
   };
 }
 
