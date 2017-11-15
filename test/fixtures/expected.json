@@ -22,6 +22,11 @@
       "items": {
         "type": "string"
       }
+    },
+    {
+      "title": "profileImage",
+      "description": "Profile picture of the user",
+      "type": "file"
     }
   ],
   "throws": [
