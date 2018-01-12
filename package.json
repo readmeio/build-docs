@@ -8,8 +8,8 @@
   "repository": "readmeio/build-docs",
   "scripts": {
     "pretest": "eslint . -f unix",
-    "test": "nyc mocha",
-    "posttest": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100"
+    "test": "nyc --reporter=none mocha",
+    "posttest": "./bin/posttest.sh"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
